@@ -11,9 +11,8 @@ define('THINK_START_TIME', microtime(true));
 define('THINK_START_MEM', memory_get_usage());
 define('EXT', '.php');
 define('DS', DIRECTORY_SEPARATOR);
-defined('THINK_PATH') or define('THINK_PATH', __DIR__ . DS);
-define('LIB_PATH', THINK_PATH . 'lib' . DS);
-define('CORE_PATH', LIB_PATH . 'think' . DS);
+defined('WORKERMVC_PATH') or define('WORKERMVC_PATH', __DIR__ . DS);
+define('LIB_PATH', WORKERMVC_PATH . 'src' . DS);
 define('TRAIT_PATH', LIB_PATH . 'traits' . DS);
 define('ENGINE_PATH', LIB_PATH . 'workerman' . DS);
 defined('ROOT_PATH') or define('ROOT_PATH', dirname(realpath(APP_PATH)) . DS);
@@ -33,3 +32,7 @@ defined('ENV_PREFIX') or define('ENV_PREFIX', 'PHP_');
 if(PHP_SAPI != 'cli'){
     exit("Error: WorkerMVC 只能运行在 php cli 模式下.");
 }
+
+require_once WORKERMVC_PATH . 'common.php';
+
+$mainServer = new \workermvc\server\MainServer();
