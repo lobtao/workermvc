@@ -1,0 +1,33 @@
+{
+    "name": "lobtao/workermvc",
+    "description": "the mvc base on workerman",
+    "type": "project",
+    "keywords": [
+        "framework",
+        "workermvc",
+        "workerman",
+        "mvc"
+    ],
+    "homepage": "http://yssoft.cn/",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "lobtao",
+            "email": "lobtao@qq.com"
+        }
+    ],
+    "require": {
+        "topthink/think-orm": "^1.2",
+        "topthink/think-template": "^1.0",
+        "topthink/think-cache": "^1.0",
+        "topthink/think-validate": "^1.0",
+        "topthink/think-log": "^1.0",
+        "workerman/workerman": "^3.5",
+        "topthink/think-worker": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "think\\": "src"
+        }
+    }
+}
