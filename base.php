@@ -5,6 +5,8 @@
  * Time: 下午10:42
  */
 
+use workermvc\Config;
+use workermvc\server\MainServer;
 
 define('THINK_VERSION', '1.0.0 alpha');
 define('THINK_START_TIME', microtime(true));
@@ -34,5 +36,9 @@ if(PHP_SAPI != 'cli'){
 }
 
 require_once WORKERMVC_PATH . 'common.php';
+require_once WORKERMVC_PATH . 'helper.php';
 
-$mainServer = new \workermvc\server\MainServer();
+Config::_init();
+
+$mainServer = new MainServer();
+$mainServer::runAll();

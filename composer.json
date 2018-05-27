@@ -22,8 +22,7 @@
         "topthink/think-cache": "^1.0",
         "topthink/think-validate": "^1.0",
         "topthink/think-log": "^1.0",
-        "workerman/workerman": "^3.5",
-        "topthink/think-worker": "^1.0"
+        "workerman/workerman": "^3.5"
     },
     "autoload": {
         "psr-4": {
