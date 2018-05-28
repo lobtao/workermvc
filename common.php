@@ -56,7 +56,7 @@ if (!function_exists("think_controller_analyze")) {
 
         $controllerSep = explode("/", $controller);
         if (sizeof($controllerSep) > 3) {
-            $controllerNameSpace = ucfirst($controllerSep[2]);
+            $controllerNameSpace = $controllerSep[2];
             $methodName = $controllerSep[3];
         }
 
