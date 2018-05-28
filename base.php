@@ -9,6 +9,7 @@ use workermvc\Config;
 use workermvc\Log;
 use workermvc\Session;
 use think\Db;
+use think\Cache;
 use workermvc\server\MainServer;
 
 define('THINK_VERSION', '1.0.0 alpha');
@@ -49,7 +50,7 @@ Config::_init();
 /**
  * 缓存初始化
  */
-\think\Cache::init(Config::get('','cache'));
+Cache::init(Config::get('','cache'));
 
 /**
  * 日志初始化
