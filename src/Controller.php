@@ -110,7 +110,7 @@ abstract class Controller
         if (!isset($template) || empty($template)) {
             $template = $this->req->controllerInfo->controllerNameSpace . DS . $this->req->controllerInfo->methodName;
         }
-        //只输入方法名情况
+        //只输入模板名情况
         if (strpos($template, '/') == 0) {
             $template = $this->req->controllerInfo->controllerNameSpace . DS . $template;
         }

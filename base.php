@@ -56,7 +56,6 @@ Log::_init(Config::get('log'));
  */
 Db::setConfig(Config::get('','database'));
 
-
 /**
  * Session 初始化
  */
