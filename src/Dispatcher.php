@@ -96,17 +96,17 @@ class Dispatcher {
             $controller = new $classFullName($req, $resp); // Get a Controller instance
         } catch (\Error $e) {
             /* Locate the Controller PHP file */
-            $phpFile = Loader::classToAppFilePathPsr0($classFullName);
-            if (!is_file($phpFile)) {
-                $phpFile = Loader::classToAppFilePath($classFullName);
-            }
-            if (is_file($phpFile)) {
-                $errorMsg = "";
-                $result = Debug::checkPHPSyntax($phpFile, $errorMsg);// Check syntax error
-                if (!$result) {
-                    throw new SyntaxParseException($phpFile, $errorMsg);
-                }
-            }
+//            $phpFile = Loader::classToAppFilePathPsr0($classFullName);
+//            if (!is_file($phpFile)) {
+//                $phpFile = Loader::classToAppFilePath($classFullName);
+//            }
+//            if (is_file($phpFile)) {
+//                $errorMsg = "";
+//                $result = Debug::checkPHPSyntax($phpFile, $errorMsg);// Check syntax error
+//                if (!$result) {
+//                    throw new SyntaxParseException($phpFile, $errorMsg);
+//                }
+//            }
             /* File not found */
             throw new ControllerNotFoundException($e, $appNameSpace . "/" . $controllerNameSpace);
         }
