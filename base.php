@@ -49,7 +49,7 @@ Config::_init();
 /**
  * 日志初始化
  */
-Log::_init(Config::get('','log'));
+Log::_init(Config::get('log'));
 
 /**
  * 数据库初始化
@@ -60,7 +60,7 @@ Db::setConfig(Config::get('','database'));
 /**
  * Session 初始化
  */
-Session::_init(Config::get('','session'));
+Session::_init(Config::get('session'));
 
 $mainServer = new MainServer();
 $mainServer::runAll();
