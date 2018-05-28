@@ -7,6 +7,7 @@
 
 namespace workermvc\server;
 
+use think\Log;
 use Workerman\Connection\TcpConnection;
 use Workerman\Worker;
 use workermvc\Config;
@@ -24,20 +25,23 @@ class MainServer extends BaseServer {
      * @var Worker
      */
     protected $worker;
+    protected $socket = '';
     protected $protocol = 'http';
-    protected $host = '0.0.0.0';
-    protected $port = '9981';
+    protected $hostname = '0.0.0.0';
+    protected $hostport = '9981';
     protected $count = 4;
     protected $name = 'MainServer';
     protected $max_request_restart = true;
     protected $max_request_limit = 1000;
 
     protected function init() {
-
+        /**
+         * 加载 worker 配置
+         */
         $config = Config::get('worker');
         !isset($config['protocol']) or $this->protocol = $config['protocol'];
-        !isset($config['host']) or $this->host = $config['host'];
-        !isset($config['port']) or $this->port = $config['port'];
+        !isset($config['hostname']) or $this->hostname = $config['hostname'];
+        !isset($config['hostport']) or $this->hostport = $config['hostport'];
         !isset($config['count']) or $this->count = $config['count'];
         !isset($config['name']) or $this->name = $config['name'];
         !isset($config['max_request_restart']) or $this->max_request_restart = $config['max_request_restart'];
@@ -53,13 +57,19 @@ class MainServer extends BaseServer {
     }
 
     /**
+     * @param Worker $worker
+     */
+    public function onWorkerReload($worker){
+
+    }
+    /**
      * @param TcpConnection $connection
      * @param $data
      */
     public function onMessage($connection, $data) {
         global $TW_ENV_REQUEST, $TW_ENV_RESPONSE;
         //Session auto start
-        if(config("session.auto_start")){
+        if (config("session.auto_start")) {
             Session::startSession();
         }
         //Init Request and Response Objects
@@ -68,25 +78,24 @@ class MainServer extends BaseServer {
         $TW_ENV_REQUEST = $req;
         $TW_ENV_RESPONSE = $resp;
 
-        try{
+        try {
             //Static files dispatching
-            if(StaticDispatcher::dispatch($req, $resp)){
+            if (StaticDispatcher::dispatch($req, $resp)) {
                 return;
             };
             //Dispatching
-            //$connection->send(json_encode($req));
             Dispatcher::dispatch($req->getUri(), $req, $resp);
-        }catch (HttpException $e){
+        } catch (HttpException $e) {
             //Caught HttpException then deliver msg to browser client
             $resp->setHeader("HTTP", true, $e->getStatusCode());
             $resp->send($e->getHttpBody());
             $eDesc = describeException($e);
 //            Log::e($eDesc, "HttpException");
-        }catch (FatalException $e){
+        } catch (FatalException $e) {
             //Caught FatalException then log error and shut down server
             $eDesc = describeException($e);
 //            Log::e($eDesc, "FatalException");
-        }catch (\Throwable $e){
+        } catch (\Throwable $e) {
             //Unknown but not Fatal Exception
             $ne = new UnknownException($e);
             $resp->setHeader("HTTP", true, $ne->getStatusCode());
@@ -103,8 +112,40 @@ class MainServer extends BaseServer {
         }
     }
 
+    /**
+     * 启动服务
+     */
     public static function runAll() {
+        self::loadOtherServers();
         worker::runAll();
     }
 
+    /**
+     * 加载其它服务
+     */
+    private static function loadOtherServers() {
+        if (think_core_is_win()) {
+            think_core_print_error("Windows does not support multi workers!");
+            return;
+        }
+
+        /**
+         * 添加文件检测服务
+         */
+        if (Config::get('worker.debug')) {
+            new FileMonitor();
+        }
+
+        /**
+         * 加载自定义服务
+         */
+        foreach (glob(APP_PATH . "server" . DS . "*" . EXT) as $serverFile) {
+            $fullClassName = "app\\server\\" . basename($serverFile, '.php');
+            try {
+                new $fullClassName();
+            } catch (\Exception $e) {
+                think_core_print_error("Failed to load: " . $fullClassName);
+            }
+        }
+    }
 }

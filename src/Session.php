@@ -27,7 +27,7 @@ class Session {
      */
     public static function _init($configs) {
         $driverName = (isset($configs['driver']) && !empty($configs['driver'])) ? $configs['driver'] : "file";
-        self::$driver = think_core_new_driver("think\\session", $driverName);
+        self::$driver = think_core_new_driver("workermvc\\session", $driverName);
         self::$driver->init($configs);
         self::$sessionPrefix = is_null(config("session.prefix")) ? '' : trim(config("session.prefix"));
     }

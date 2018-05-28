@@ -48,8 +48,6 @@ class Log {
      * @return void
      */
     public static function __callStatic($method, $args) {
-        if (!isset(self::$driver)) self::_init(config('log'));
-
         if (in_array($method, self::$type)) {
             array_push($args, $method);
 

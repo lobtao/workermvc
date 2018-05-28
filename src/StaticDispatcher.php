@@ -38,12 +38,12 @@ class StaticDispatcher
         //Workerman Http protocol inner mime type maps
         $mime_file = Http::getMimeTypesFile();
         if (!is_file($mime_file)) {
-            Log::e("$mime_file mime.type file not fond");
+            Log::error("$mime_file mime.type file not fond");
             return;
         }
         $items = file($mime_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         if (!is_array($items)) {
-            Log::e("get $mime_file mime.type content fail");
+            Log::error("get $mime_file mime.type content fail");
             return;
         }
         foreach ($items as $content) {
@@ -92,7 +92,7 @@ class StaticDispatcher
     private static function tryMatchFileName(Request $req){
         $uri = str_replace("/", DS, $req->uri);
         $uri = substr($uri, 1);
-        $urlInfo = pathinfo($uri);
+        //$urlInfo = pathinfo($uri);
         $filePath = PUBLIC_PATH.$uri;
         if(is_file($filePath)){
             $filePath = realpath($filePath);

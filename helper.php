@@ -7,8 +7,9 @@
  */
 
 use workermvc\Config;
-use think\Log;
+use workermvc\Lang;
 use workermvc\Filter;
+use workermvc\Session;
 
 if (!function_exists('config')) {
     function config($name = '', $value = null, $range = 'general')
@@ -68,12 +69,6 @@ if (!function_exists('jsonp')) {
     }
 }
 
-if (!function_exists('log')) {
-    function log($type, $marker, $msg)
-    {
-        return Log::log($type, $marker, $msg);
-    }
-}
 
 if (!function_exists('session')) {
     function session($name, $value = '')
@@ -126,7 +121,7 @@ if (!function_exists('envar')) {
                 if(isset($TW_ENV_LANG)){
                     return $TW_ENV_LANG;
                 }else{
-                    return new \think\Lang();
+                    return new Lang();
                 }
                 break;
         }

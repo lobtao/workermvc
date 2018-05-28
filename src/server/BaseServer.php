@@ -18,9 +18,10 @@ use Workerman\Worker;
  */
 abstract class BaseServer {
     protected $worker;
+    protected $socket = '';
     protected $protocol = 'http';
-    protected $host = '0.0.0.0';
-    protected $port = '9981';
+    protected $hostname = '0.0.0.0';
+    protected $hostport = '9981';
     protected $count = 4;
     protected $name = 'BaseServer';
 
@@ -32,7 +33,7 @@ abstract class BaseServer {
         // 初始化
         $this->init();
         // 实例化 Websocket 服务
-        $this->worker = new Worker($this->protocol . '://' . $this->host . ':' . $this->port);
+        $this->worker = new Worker($this->socket ?: ($this->protocol ? $this->protocol . '://' . $this->hostname . ':' . $this->hostport : ''));
         // 设置进程数
         $this->worker->count = $this->count;
         $this->worker->name = $this->name;
