@@ -83,7 +83,6 @@ class Config {
         $range = $range ?: self::$range;
 
         if ((empty($name) || is_null($name)) && isset(self::$config[$range])) {
-            echo '来了'.PHP_EOL;
             return self::$config[$range];
         }
         if (!strpos($name, '.')) {
