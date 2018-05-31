@@ -12,7 +12,7 @@ use think\Db;
 use think\Cache;
 use workermvc\server\MainServer;
 
-define('THINK_VERSION', '1.0.0 alpha');
+define('WORKERMVC_VERSION', '1.0.5');
 define('THINK_START_TIME', microtime(true));
 define('THINK_START_MEM', memory_get_usage());
 define('EXT', '.php');
