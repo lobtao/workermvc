@@ -36,9 +36,9 @@ abstract class Controller
         $this->req = $req;
         $this->resp = $resp;
         if (!is_null($req->controllerInfo)) {
-            $appName = $req->controllerInfo->appNameSpace;
-            $controllerName = $req->controllerInfo->controllerNameSpace;
-            $methodName = $req->controllerInfo->methodName;
+//            $appName = $req->controllerInfo->appNameSpace;
+//            $controllerName = $req->controllerInfo->controllerNameSpace;
+//            $methodName = $req->controllerInfo->methodName;
             try {
                 $config = Config::get('template');
                 $config['cache_path'] = APP_PATH . '..' . DS . 'runtime' . DS . 'cache' . DS . 'view' . DS;

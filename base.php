@@ -50,23 +50,23 @@ Config::_init();
 /**
  * 缓存初始化
  */
-Cache::init(Config::get('','cache'));
+Cache::init(Config::get('cache'));
 
 /**
  * 日志初始化
  */
-Log::_init(Config::get('','log'));
+Log::_init(Config::get('log'));
 
 /**
  * 数据库初始化
  */
-Db::setConfig(Config::get('','database'));
+Db::setConfig(Config::get('database'));
 
 
 /**
  * Session 初始化
  */
-Session::_init(Config::get('','session'));
+Session::_init(Config::get('session'));
 
 $mainServer = new MainServer();
 $mainServer::runAll();

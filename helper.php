@@ -12,8 +12,10 @@ use workermvc\Filter;
 use workermvc\Session;
 
 if (!function_exists('config')) {
-    function config($name = '', $value = null, $range = 'general')
+    function config($name = '', $value = null, $range = '')
     {
+        $range = $range ?: Config::$range;
+
         if (is_null($value) && is_string($name)) {
             return 0 === strpos($name, '?') ? Config::has(substr($name, 1), $range) : Config::get($name, $range);
         } else {
