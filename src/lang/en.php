@@ -30,7 +30,7 @@ return [
     'tracing page env system' => 'OS',
     'tracing page env php version' => 'PHP Version',
     'tracing page env workerman version' => 'Workerman Version',
-    'tracing page env thinkworker version' => 'ThinkWorker Version',
+    'tracing page env workermvc version' => 'WorkerMVC Version',
     'tracing page env supported' => 'Yes',
     'tracing page env not supported' => 'No',
     'tracing page env pcntl supported' => 'pcntl Extension',

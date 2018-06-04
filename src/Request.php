@@ -121,11 +121,18 @@ class Request {
             array_push($this->files, new File($fileinfo));
         }
         $this->hostname = think_core_clean_hostname($this->headers['HTTP_HOST']);
-        $this->fullRequestUri = $this->headers['HTTP_HOST'].$this->headers['REQUEST_URI'];
+        $this->fullRequestUri = $this->headers['HTTP_HOST'] . $this->headers['REQUEST_URI'];
+
         $this->requestUri = $this->headers['REQUEST_URI'];
+        // 去掉?后面的参数
         if (!!strpos($this->requestUri, "?")) {
             $this->requestUri = strtolower(substr($this->requestUri, 0, strpos($this->requestUri, "?")));
         }
+
+        // 伪静态处理
+        $url_html_suffix = Config::get('think.url_html_suffix');
+        $this->requestUri = isset($url_html_suffix) ? think_core_rtrim($this->requestUri, $url_html_suffix) : $this->requestUri;
+
         $this->ip = $this->headers['REMOTE_ADDR'];
     }
 

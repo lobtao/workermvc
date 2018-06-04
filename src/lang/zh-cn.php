@@ -30,7 +30,7 @@ return [
     'tracing page env system' => '操作系统',
     'tracing page env php version' => 'PHP版本',
     'tracing page env workerman version' => 'Workerman版本',
-    'tracing page env thinkworker version' => 'ThinkWorker版本',
+    'tracing page env workermvc version' => 'WorkerMVC版本',
     'tracing page env supported' => '支持',
     'tracing page env not supported' => '不支持',
     'tracing page env pcntl supported' => 'pcntl扩展',

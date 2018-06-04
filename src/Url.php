@@ -39,13 +39,20 @@ class Url {
             $url = $appNameSpace . '/' . $url;
         }
 
-        $url = $url . '?' . $vars;
+        // 伪静态处理
+        if ($suffix) {
+            $url_html_suffix = Config::get('think.url_html_suffix');
+            $url = isset($url_html_suffix) ? $url . $url_html_suffix . '?' . $vars : $url . '?' . $vars;
+        } else {
+            $url = $url . '?' . $vars;
+        }
+
         $scheme = Config::get('think.is_https') ? 'https://' : 'http://';
         global $TW_ENV_REQUEST;
         if ($domain) {
-            $url = $scheme . $TW_ENV_REQUEST->getHostname() .'/'. $url;
-        }else{
-            $url = '/'.$url;
+            $url = $scheme . $TW_ENV_REQUEST->getHostname() . '/' . $url;
+        } else {
+            $url = '/' . $url;
         }
         return $url;
     }

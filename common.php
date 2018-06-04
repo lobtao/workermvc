@@ -516,7 +516,7 @@ if (!function_exists("think_core_release_write")) {
 
 if (!function_exists("think_core_print_error")) {
     function think_core_print_error($msg, $description = null) {
-        echo "====================== ThinkWorker Error =====================\n";
+        echo "====================== WorkerMVC Error =====================\n";
         echo "    Error: " . $msg . "\n";
         if ($description != null) {
             echo "   " . $description . "\n";
@@ -527,7 +527,7 @@ if (!function_exists("think_core_print_error")) {
 
 if (!function_exists("think_core_print_info")) {
     function think_core_print_info($msg, $description = null) {
-        echo " [ThinkWorker] [info] " . $msg . (is_null($description) ? "" : ":" . $description) . "\n";
+        echo " [WorkerMVC] [info] " . $msg . (is_null($description) ? "" : ":" . $description) . "\n";
     }
 }
 
