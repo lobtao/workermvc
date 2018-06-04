@@ -52,8 +52,14 @@ if (!function_exists("think_controller_analyze")) {
         $methodName = is_null($methodName) ? "index" : $methodName;
 
         $controllerSep = explode("/", $controller);
-        if (sizeof($controllerSep) > 3) {
+        if (sizeof($controllerSep) > 2) {
             $controllerNameSpace = ucfirst($controllerSep[2]);
+            if (config('think.controller_suffix')) {
+                $controllerNameSpace = $controllerNameSpace . 'Controller';
+            }
+        }
+        //存在方法的情况下,否则使用默认方法Index
+        if (sizeof($controllerSep) > 3) {
             $methodName = $controllerSep[3];
         }
 
