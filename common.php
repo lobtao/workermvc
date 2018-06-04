@@ -5,6 +5,7 @@
 
 use workermvc\Config;
 use workermvc\Lang;
+use workermvc\Url;
 
 if (!function_exists("wildcardMatch")) {
     function wildcardMatch($pattern, $value) {
@@ -154,7 +155,12 @@ if (!function_exists("think_core_clean_hostname")) {
         if ($pos === false) {
             return $hostname;
         }
-        return substr($hostname, 0, $pos);
+        $tmp = $hostname.'_';
+        if(strpos($tmp, ":80_s")){
+            return substr($hostname, 0, $pos);
+        }else{
+            return $hostname;
+        }
     }
 }
 
@@ -559,5 +565,20 @@ if (!function_exists("think_tool_get_rand_sid")) {
         srand($TW_CORE_RAND_SID);
         $TW_CORE_RAND_SID = rand();
         return $TW_CORE_RAND_SID;
+    }
+}
+
+if (!function_exists('url')) {
+    /**
+     * Url生成
+     * @param string        $url 路由地址
+     * @param string|array  $vars 变量
+     * @param bool|string   $suffix 生成的URL后缀
+     * @param bool|string   $domain 域名
+     * @return string
+     */
+    function url($url = '', $vars = '', $suffix = true, $domain = false)
+    {
+        return Url::build($url, $vars, $suffix, $domain);
     }
 }

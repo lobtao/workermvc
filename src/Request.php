@@ -121,7 +121,7 @@ class Request {
             array_push($this->files, new File($fileinfo));
         }
         $this->hostname = think_core_clean_hostname($this->headers['HTTP_HOST']);
-        $this->fullRequestUri = $this->headers['REQUEST_URI'];
+        $this->fullRequestUri = $this->headers['HTTP_HOST'].$this->headers['REQUEST_URI'];
         $this->requestUri = $this->headers['REQUEST_URI'];
         if (!!strpos($this->requestUri, "?")) {
             $this->requestUri = strtolower(substr($this->requestUri, 0, strpos($this->requestUri, "?")));
