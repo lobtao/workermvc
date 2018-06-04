@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Dizy
- * Date: 2017/12/10
- * Time: 15:11
+ * Created by lobtao.
  */
 
 namespace workermvc\session;
