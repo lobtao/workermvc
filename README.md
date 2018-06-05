@@ -9,5 +9,6 @@ workermvc 是一个基于 workerman 的 mvc 框架，使用习惯非常类似 th
 6. 支持ThinkPHP5的日志处理
 7. 支持WorkerMan的热加载配置
 8. 支持同时启动多个不同服务的Worker
+9. 支持网址后缀配置,可方便配置为伪静态网址
 
 workermvc大量参考了ThinkPHP和ThinkWork的设计思想
