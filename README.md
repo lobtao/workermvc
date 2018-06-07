@@ -12,3 +12,5 @@ workermvc 是一个基于 workerman 的 mvc 框架，使用习惯非常类似 th
 9. 支持网址后缀配置,可方便配置为伪静态网址
 
 workermvc大量参考了ThinkPHP和ThinkWork的设计思想
+
+欢迎沟通交流: lobtao@qq.com
