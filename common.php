@@ -6,6 +6,7 @@
 use workermvc\Config;
 use workermvc\Lang;
 use workermvc\Url;
+use workermvc\Request;
 
 if (!function_exists("wildcardMatch")) {
     function wildcardMatch($pattern, $value) {
@@ -18,12 +19,12 @@ if (!function_exists("wildcardMatch")) {
 }
 
 if (!function_exists("describeException")) {
-    function describeException(Throwable $e) {
+    function describeException(Exception $e) {
         $head = "";
         try {
             $eRef = new ReflectionClass($e);
             $head = "[" . $eRef->getShortName() . "] ";
-        } catch (Throwable $e) {
+        } catch (Exception $e) {
 
         }
         return $head . $e->getFile() . "(" . $e->getLine() . "): " . $e->getMessage() . "\n" . $e->getTraceAsString();
@@ -580,5 +581,45 @@ if (!function_exists('url')) {
     function url($url = '', $vars = '', $suffix = true, $domain = false)
     {
         return Url::build($url, $vars, $suffix, $domain);
+    }
+}
+
+if (!function_exists('request')) {
+    /**
+     * 获取当前Request对象实例
+     * @return Request
+     */
+    function request()
+    {
+        global $TW_ENV_REQUEST;
+        return $TW_ENV_REQUEST;
+    }
+}
+
+if (!function_exists('input')) {
+    /**
+     * 获取输入数据 目前只支持get和post方法
+     * @param string    $key 获取的变量名
+     * @param mixed     $default 默认值
+     * @param string    $filter 过滤方法
+     * @return mixed
+     */
+    function input($key = '', $default = null)
+    {
+        if (0 === strpos($key, '?')) {
+            $key = substr($key, 1);
+        }
+        if ($pos = strpos($key, '.')) {
+            // 指定参数来源
+            list($method, $key) = explode('.', $key, 2);
+            if (!in_array($method, ['get', 'post'])) {
+                $method = 'param';
+            }
+        } else {
+            // 默认为自动判断
+            $method = 'param';
+        }
+
+        return request()->$method($key, $default);
     }
 }

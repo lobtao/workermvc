@@ -13,11 +13,11 @@ abstract class Controller
     /**
      * @var Request
      */
-    protected $req;
+    protected $request;
     /**
      * @var Response
      */
-    protected $resp;
+    protected $response;
     /**
      * @var null|Template
      */
@@ -30,8 +30,8 @@ abstract class Controller
      * @param Response $resp
      */
     public function __construct(Request $req, Response $resp) {
-        $this->req = $req;
-        $this->resp = $resp;
+        $this->request = $req;
+        $this->response = $resp;
         if (!is_null($req->controllerInfo)) {
 //            $appName = $req->controllerInfo->appNameSpace;
 //            $controllerName = $req->controllerInfo->controllerNameSpace;
@@ -60,7 +60,7 @@ abstract class Controller
     public function _beforeAction($method) {
         foreach ($this->beforeActionList as $key => $value) {
             if (is_numeric($key)) {
-                $this->$value($this->req, $this->resp);
+                $this->$value($this->request, $this->response);
             } else {
                 $go = true;
                 if (isset($value["except"]) && think_core_in_array_or_string($method, $value["except"])) {
@@ -73,7 +73,7 @@ abstract class Controller
                     }
                 }
                 if ($go) {
-                    $this->$key($this->req, $this->resp);
+                    $this->$key($this->request, $this->response);
                 }
             }
         }
@@ -105,11 +105,11 @@ abstract class Controller
         }
         //空情况
         if (!isset($template) || empty($template)) {
-            $template = $this->req->controllerInfo->controllerNameSpace . DS . $this->req->controllerInfo->methodName;
+            $template = $this->request->controllerInfo->controllerNameSpace . DS . $this->request->controllerInfo->methodName;
         }
         //只输入模板名情况
         if (strpos($template, '/') == 0) {
-            $template = $this->req->controllerInfo->controllerNameSpace . DS . $template;
+            $template = $this->request->controllerInfo->controllerNameSpace . DS . $template;
         }
         $template = strtolower($template);
         if ($this->view) {
@@ -141,7 +141,7 @@ abstract class Controller
      */
     public function render($template = null) {
         if ($this->view) {
-            $this->resp->send($this->fetch($template));
+            $this->response->send($this->fetch($template));
         }
     }
 

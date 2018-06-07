@@ -7,7 +7,6 @@
 
 namespace workermvc\server;
 
-use think\Log;
 use Workerman\Connection\TcpConnection;
 use Workerman\Worker;
 use workermvc\Config;
@@ -15,12 +14,14 @@ use workermvc\Dispatcher;
 use workermvc\exception\FatalException;
 use workermvc\exception\HttpException;
 use workermvc\exception\UnknownException;
+use workermvc\Log;
 use workermvc\Request;
 use workermvc\Response;
 use workermvc\Session;
 use workermvc\StaticDispatcher;
 
 class MainServer extends BaseServer {
+
     /**
      * @var Worker
      */
@@ -59,9 +60,10 @@ class MainServer extends BaseServer {
     /**
      * @param Worker $worker
      */
-    public function onWorkerReload($worker){
+    public function onWorkerReload($worker) {
 
     }
+
     /**
      * @param TcpConnection $connection
      * @param $data
@@ -90,18 +92,18 @@ class MainServer extends BaseServer {
             $resp->setHeader("HTTP", true, $e->getStatusCode());
             $resp->send($e->getHttpBody());
             $eDesc = describeException($e);
-//            Log::e($eDesc, "HttpException");
+            Log::error($eDesc);
         } catch (FatalException $e) {
             //Caught FatalException then log error and shut down server
             $eDesc = describeException($e);
-//            Log::e($eDesc, "FatalException");
+            Log::error($eDesc);
         } catch (\Throwable $e) {
             //Unknown but not Fatal Exception
             $ne = new UnknownException($e);
             $resp->setHeader("HTTP", true, $ne->getStatusCode());
             $resp->send($ne->getHttpBody());
             $eDesc = describeException($e);
-//            Log::e($eDesc, "UnkownException");
+            Log::error($eDesc);
         }
 
         if ($this->max_request_restart && !think_core_is_win()) {

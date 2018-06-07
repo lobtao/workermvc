@@ -9,6 +9,7 @@ namespace workermvc;
 use Workerman\Protocols\Http;
 
 class Request {
+
     //Stable
     /**
      * @var array
@@ -23,12 +24,12 @@ class Request {
     /**
      * @var array
      */
-    protected $post;
+    protected $post = [];
 
     /**
      * @var array
      */
-    protected $get;
+    protected $get = [];
 
     /**
      * @var array
@@ -137,52 +138,58 @@ class Request {
     }
 
     /**
-     * Get a GET parameter or all
-     *
-     * @param string|null $key
-     * @param null $value
-     * @return mixed|null|object
+     * 自动判断方法获取参数
+     * @param null $key
+     * @param null $default
+     * @return null|object
      */
-    public function get($key = null, $value = null) {
+    public function param($key = null, $default = null) {
+        if ($this->method == 'GET') {
+            return $this->get($key, $default);
+        } else {
+            return $this->post($key, $default);
+        }
+    }
+
+    /**
+     * 获取GET方法参数
+     * @param null $key
+     * @param null $default
+     * @return null|object
+     */
+    public function get($key = null, $default = null) {
         if (is_null($key)) {
             return (object)$this->get;
         }
-        if (is_null($value)) {
-            return isset($this->get[$key]) ? $this->get[$key] : null;
-        } else {
-            $this->get[$key] = $value;
-        }
+
+        $value = array_key_exists($key, $this->get) ? $this->get[$key] : null;
+        return isset($value) ? $value : ($this->get[$key] = $default);
     }
 
     /**
-     * Get a POST parameter or all
-     *
-     * @param string|null $key
-     * @param null $value
-     * @return mixed|null|object
+     * 获取POST方法参数
+     * @param null $key
+     * @param null $default
+     * @return null|object
      */
-    public function post($key = null, $value = null) {
+    public function post($key = null, $default = null) {
         if (is_null($key)) {
             return (object)$this->post;
         }
-        if (is_null($value)) {
-            return isset($this->post[$key]) ? $this->post[$key] : null;
-        } else {
-            $this->post[$key] = $value;
-        }
+
+        $value = array_key_exists($key, $this->post) ? $this->post[$key] : null;
+        return isset($value) ? $value : ($this->post[$key] = $default);
     }
 
     /**
-     * Get RAW POST data
-     *
      * @param null $data
-     * @return string
+     * @return null|string
      */
     public function rawPost($data = null) {
         if (is_null($data)) {
             return filter($GLOBALS['HTTP_RAW_POST_DATA']);
         } else {
-            $GLOBALS['HTTP_RAW_POST_DATA'] = $data;
+            return $GLOBALS['HTTP_RAW_POST_DATA'] = $data;
         }
     }
 
@@ -194,7 +201,7 @@ class Request {
      */
     public function payload($data = null) {
         if (is_array($data)) {
-            $this->payload = $data;
+            return $this->payload = $data;
         } else if (is_null($data)) {
             return (object)$this->payload;
         } else if (is_string($data)) {
