@@ -29,9 +29,10 @@ class FileMonitor extends BaseServer {
         $monitor_dir = realpath(APP_PATH . '..');
         // watch files only in daemon mode
         $dirs = Config::get('worker.debug_dirs');
-        foreach ($dirs as $dir)
+        foreach ($dirs as $dir){
             // chek mtime of files per second
             Timer::add(1, [$this, 'check_files_change'], array($dir));
+        }
     }
 
     // check files func

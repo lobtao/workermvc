@@ -7,6 +7,8 @@
 
 namespace workermvc\server;
 
+use think\Cache;
+use think\Db;
 use Workerman\Connection\TcpConnection;
 use Workerman\Worker;
 use workermvc\Config;
@@ -37,6 +39,11 @@ class MainServer extends BaseServer {
 
     protected function init() {
         /**
+         * 配置文件初始化
+         */
+        Config::_init();
+
+        /**
          * 加载 worker 配置
          */
         $config = Config::get('worker');
@@ -47,21 +54,44 @@ class MainServer extends BaseServer {
         !isset($config['name']) or $this->name = $config['name'];
         !isset($config['max_request_restart']) or $this->max_request_restart = $config['max_request_restart'];
         !isset($config['max_request_limit']) or $this->max_request_limit = $config['max_request_limit'];
-
     }
+
 
     /**
      * @param Worker $worker
      */
     public function onWorkerStart($worker) {
+        /**
+         * 配置文件重新加载, FileMonitor加载配置文件
+         */
+        Config::_init();
 
+        /**
+         * 缓存初始化
+         */
+        Cache::init(Config::get('cache'));
+
+        /**
+         * 日志初始化
+         */
+        Log::_init(Config::get('log'));
+
+        /**
+         * 数据库初始化
+         */
+        Db::setConfig(Config::get('database'));
+
+
+        /**
+         * Session 初始化
+         */
+        Session::_init(Config::get('session'));
     }
 
     /**
      * @param Worker $worker
      */
     public function onWorkerReload($worker) {
-
     }
 
     /**

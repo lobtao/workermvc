@@ -39,32 +39,32 @@ if (PHP_SAPI != 'cli') {
 
 require_once WORKERMVC_PATH . 'common.php';
 require_once WORKERMVC_PATH . 'helper.php';
-
-/**
- * 配置文件初始化
- */
-Config::_init();
-
-/**
- * 缓存初始化
- */
-Cache::init(Config::get('cache'));
-
-/**
- * 日志初始化
- */
-Log::_init(Config::get('log'));
-
-/**
- * 数据库初始化
- */
-Db::setConfig(Config::get('database'));
-
-
-/**
- * Session 初始化
- */
-Session::_init(Config::get('session'));
+//
+///**
+// * 配置文件初始化
+// */
+//Config::_init();
+//
+///**
+// * 缓存初始化
+// */
+//Cache::init(Config::get('cache'));
+//
+///**
+// * 日志初始化
+// */
+//Log::_init(Config::get('log'));
+//
+///**
+// * 数据库初始化
+// */
+//Db::setConfig(Config::get('database'));
+//
+//
+///**
+// * Session 初始化
+// */
+//Session::_init(Config::get('session'));
 
 $mainServer = new MainServer();
 $mainServer::runAll();
