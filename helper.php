@@ -7,6 +7,7 @@ use workermvc\Config;
 use workermvc\Lang;
 use workermvc\Filter;
 use workermvc\Session;
+use think\Cache;
 
 if (!function_exists('config')) {
     function config($name = '', $value = null, $range = '')
@@ -80,6 +81,55 @@ if (!function_exists('session')) {
             return Session::delete($name);
         } else {
             return Session::set($name, $value);
+        }
+    }
+}
+
+
+if (!function_exists('cache')) {
+    /**
+     * 缓存管理
+     * @param mixed     $name 缓存名称，如果为数组表示进行缓存设置
+     * @param mixed     $value 缓存值
+     * @param mixed     $options 缓存参数
+     * @param string    $tag 缓存标签
+     * @return mixed
+     */
+    function cache($name, $value = '', $options = null, $tag = null)
+    {
+        if (is_array($options)) {
+            // 缓存操作的同时初始化
+            $cache = Cache::connect($options);
+        } elseif (is_array($name)) {
+            // 缓存初始化
+            return Cache::connect($name);
+        } else {
+            $cache = Cache::init();
+        }
+
+        if (is_null($name)) {
+            return $cache->clear($value);
+        } elseif ('' === $value) {
+            // 获取缓存
+            return 0 === strpos($name, '?') ? $cache->has(substr($name, 1)) : $cache->get($name);
+        } elseif (is_null($value)) {
+            // 删除缓存
+            return $cache->rm($name);
+        } elseif (0 === strpos($name, '?') && '' !== $value) {
+            $expire = is_numeric($options) ? $options : null;
+            return $cache->remember(substr($name, 1), $value, $expire);
+        } else {
+            // 缓存数据
+            if (is_array($options)) {
+                $expire = isset($options['expire']) ? $options['expire'] : null; //修复查询缓存无法设置过期时间
+            } else {
+                $expire = is_numeric($options) ? $options : null; //默认快捷缓存设置过期时间
+            }
+            if (is_null($tag)) {
+                return $cache->set($name, $value, $expire);
+            } else {
+                return $cache->tag($tag)->set($name, $value, $expire);
+            }
         }
     }
 }
