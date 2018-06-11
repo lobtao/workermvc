@@ -54,11 +54,13 @@ if (!function_exists("think_controller_analyze")) {
         $methodName = is_null($methodName) ? "index" : $methodName;
 
         $controllerSep = explode("/", $controller);
+        //存在控制名的情况下
         if (sizeof($controllerSep) > 2) {
             $controllerNameSpace = ucfirst($controllerSep[2]);
-            if (config('think.controller_suffix')) {
-                $controllerNameSpace = $controllerNameSpace . 'Controller';
-            }
+        }
+        //开启了控制器后缀的情况下
+        if (config('think.controller_suffix')) {
+            $controllerNameSpace = $controllerNameSpace . 'Controller';
         }
         //存在方法的情况下,否则使用默认方法Index
         if (sizeof($controllerSep) > 3) {
